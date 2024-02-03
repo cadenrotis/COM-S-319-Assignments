@@ -27,6 +27,10 @@ body {
   height: 32rem;
 }
 
+.header {
+  text-align: center;
+}
+
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
