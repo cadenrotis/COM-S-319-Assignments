@@ -1,0 +1,67 @@
+{
+  "phones": [
+    {
+      "id": 1,
+      "title": "Samsung Galaxy S23",
+      "price": 430.0,
+      "description": "The Samsung Galaxy S23 is a sleek and powerful smartphone that comes with a 6.1-inch dynamic AMOLED screen with FHD+ resolution and an adaptive refresh rate that varies between 48-120 Hz. The S23 is made with an aluminum frame with glass on the front and back, enhancing the durability of the device. The S23 uses a Qualcomm Snapdragon 8 Gen 2 chipset, offering excellent performance for gaming and multitasking. The S23 also comes with a triple camera setup consisting of a 50MP wide-angle camera, a 10MP telephoto camera with 3x optical zoom, and a 12MP ultra-wide camera.",
+      "image": "https://image-us.samsung.com/us/smartphones/galaxy-s23/images/gallery/cream/01-DM1-Cream-PDP-1600x1200.jpg?$product-details-jpg$",
+      "rating": { "rate": 3.9, "count": 120 },
+      "quantity": 0
+    },
+    {
+      "id": 2,
+      "title": "Samsung Galaxy S24",
+      "price": 650.0,
+      "description": "The Samsung Galaxy S24 has a unified design with a satin finish, making it smooth to the touch. It also features a 6.2-inch AMOLED display with FHD+ resolution and a 120Hz refresh rate for fluid visuals. It's powered by the Qualcomm Snapdragon 8 Gen 3 chipset. For camera quality, the Samsung Galaxy S24 boasts a 50MP main camera, a 12MP ultra-wide camera, and a 10MP telephoto camera with 3x optical zoom. With a 4000mAh battery, the Samsung Galaxy S24 will be able to last all day without having to worry about charging it.",
+      "image": "https://media.cnn.com/api/v1/images/stellar/prod/samsung-galaxy-s24-ultra-product-card-v2-cnnu.jpg?c=16x9&q=h_720,w_1280,c_fill",
+      "rating": { "rate": 3.5, "count": 120 },
+      "quantity": 0
+    },
+    {
+      "id": 3,
+      "title": "Samsung Galaxy Z Flip 5",
+      "price": 900.0,
+      "description": "The Samsung Galaxy Z Flip 5 is a foldable smartphone that stands out from the rest of the competitors with its compact design and innovative features, such as a pocket-perfect design that allows it to fold with a fresh choice of colors. The Z Flip 5 features a 6.7-inch dynamic AMOLED main display with a 120Hz refresh rate for smooth visuals. It's powered by the Snapdragon 8 Gen 2 chipset, ensuring smooth graphics, faster AI, and improved battery performance.",
+      "image": "https://m.media-amazon.com/images/I/61eHWfy8e2L._AC_UF894,1000_QL80_.jpg",
+      "rating": { "rate": 4.6, "count": 120 },
+      "quantity": 0
+    },
+    {
+      "id": 4,
+      "title": "iPhone 14",
+      "price": 700.0,
+      "description": "The iPhone 14 is powered by the A15 Bionic chip, which includes a 6-core CPU, 5-core GPU, and a 16-core Neural Engine, a 6.1-inch super retina XDR OLED display, a dual-camera system with a 12MP main and a 12MP ultra-wide camera. The cameras are capable of video recording of up to 4K resolution.",
+      "image": "https://ss7.vzw.com/is/image/VerizonWireless/iphone14-blue-fall22-a?wid=700&hei=700&fmt=webp",
+      "rating": { "rate": 4.0, "count": 120 },
+      "quantity": 0
+    },
+    {
+      "id": 5,
+      "title": "iPhone 14 Pro Max",
+      "price": 830.0,
+      "description": "The iPhone 14 Pro Max is the high-end smartphone in the iPhone 14 series. It is powered by the A16 Bionic chip and a camera system that has a 6.7-inch super retina XDR OLED display. It comes with a 48MP main camera and a 12MP ultra-wide camera that supports 4K video recording, cinematic mode, and ProRes video recording. This model is designed for users seeking top-tier performance, especially in photography and multimedia experiences.",
+      "image": "https://m.media-amazon.com/images/I/51GZNF-UxFL.jpg",
+      "rating": { "rate": 4.2, "count": 120 },
+      "quantity": 0
+    },
+    {
+      "id": 6,
+      "title": "iPhone 15",
+      "price": 800.0,
+      "description": "The iPhone 15 is part of Apple's newest lineup of iPhones. The iPhone 15 boasts a 6.1-inch super retina XDR OLED display, packing Apple's A16 Bionic chip. The iPhone 15 continues to use an advanced dual-camera system by coming with a 48MP main camera and a 12MP ultra-wide camera, capable of 4K video recording.",
+      "image": "https://www.att.com/scmsassets/global/devices/phones/apple/apple-iphone-15/carousel/pink-1.png",
+      "rating": { "rate": 4.8, "count": 120 },
+      "quantity": 0
+    },
+    {
+      "id": 7,
+      "title": "iPhone 15 Pro Max",
+      "price": 1200.0,
+      "description": "The iPhone 15 Pro Max is Apple's flagship smartphone, featuring a titanium design with a ceramic shield front and a textured matte glass back. It also boasts a 6.7-inch super retina XDR OLED display with an adaptive refresh rate up to 120Hz. The iPhone 15 Pro Max is equipped with the new A17 Pro chip, offering the highest performance possible in an iPhone. The iPhone 15 Pro Max is also equipped with a 48MP main camera and a 12MP ultra-wide camera, which support 4K recording. If you are looking for one of Apple's most powerful devices, the iPhone 15 Pro Max is it.",
+      "image": "https://www.att.com/scmsassets/global/devices/phones/apple/apple-iphone-15-pro-max/carousel/natural-titanium-1.png",
+      "rating": { "rate": 5.0, "count": 120 },
+      "quantity": 0
+    }
+  ]
+}
