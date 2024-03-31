@@ -10,77 +10,72 @@ const render_products = (ProductsCategory, cart, { setCartQuantity }) => {
         style={{ maxHeight: "700px", overflowY: "scroll" }}
       >
         {ProductsCategory.map((product, index) => (
-          <div key={index} className="group relative shadow-lg">
-            <div className=" min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-60 lg:aspect-none">
-              <img
-                alt="Product Image"
-                src={product.image}
-                className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-              />
-            </div>
-            <div className="flex justify-between p-3">
-              <div>
-                <h3 className="text-sm text-gray-700">
-                  <a href={product.href}>
-                    <span aria-hidden="true" className="absolute inset-0" />
-                    <span style={{ fontSize: "16px", fontWeight: "600" }}>
-                      <b>
-                        <center>{product.title}</center>
-                      </b>
-                    </span>
-                  </a>
-                </h3>
-                <br></br>
-                <p className="mt-1 text-sm text-gray-500">
-                  <b>Description:</b> {product.description}
-                </p>
-                <br></br>
-                <p
-                  className="mt-1 text-sm text-gray-500"
-                  style={{ paddingBottom: "1rem" }}
-                >
-                  <b>Rating:</b> {product.rating.rate} out of 5
-                </p>
-                <hr
-                  style={{
-                    paddingBottom: "1rem",
-                    borderTop: "1px solid black",
-                  }}
-                ></hr>
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <p> Quantity: {product.quantity} </p>
-
-                  <button
-                    className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
-                    id="button"
-                    type="button"
-                    style={{ width: "40px", marginLeft: "50px"}}
-                    onClick={() => {
-                      setCartQuantity(cart + 1);
-                      product.quantity += 1;
-                      console.log("+ button is clicked");
-                    }}
-                  >
-                    <b>+</b>
-                  </button>
-                  <button
-                    className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
-                    id="button"
-                    type="button"
-                    style={{ width: "40px" }}
-                    onClick={() => {
-                      if (cart > 0) setCartQuantity(cart - 1);
-                      if (product.quantity > 0) product.quantity -= 1;
-                      console.log("- button is clicked");
-                    }}
-                  >
-                    <b>-</b>
-                  </button>
-                </div>
+          <div>
+            <div key={index} className="group relative shadow-lg">
+              <div className=" min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-60 lg:aspect-none">
+                <img
+                  alt="Product Image"
+                  src={product.image}
+                  className="w-full h-full object-center object-cover lg:w-full lg:h-full"
+                />
               </div>
-              <p className="text-sm font-medium text-green-600">
-                ${product.price}
-              </p>
+              <div className="flex justify-between p-3">
+                <div>
+                  <h3 className="text-sm text-gray-700">
+                    <a href={product.href}>
+                      <span aria-hidden="true" className="absolute inset-0" />
+                      <span style={{ fontSize: "16px", fontWeight: "600" }}>
+                        <b>
+                          <center>{product.title}</center>
+                        </b>
+                      </span>
+                    </a>
+                  </h3>
+                  <br></br>
+                  <p className="mt-1 text-sm text-gray-500">
+                    <b>Description:</b> {product.description}
+                  </p>
+                  <br></br>
+                  <p
+                    className="mt-1 text-sm text-gray-500"
+                    style={{ paddingBottom: "1rem" }}
+                  >
+                    <b>Rating:</b> {product.rating.rate} out of 5
+                  </p>
+                </div>
+                <p className="text-sm font-medium text-green-600">
+                  ${product.price}
+                </p>
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1" style={{ display: "flex", justifyContent: "center", marginTop: "10px"}}>
+              <p> Quantity: {product.quantity} </p>
+              <button
+                className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
+                id="button"
+                type="button"
+                style={{ width: "40px", marginLeft: "110px"}}
+                onClick={() => {
+                  setCartQuantity(cart + 1);
+                  product.quantity += 1;
+                  console.log("+ button is clicked");
+                }}
+              >
+                <b>+</b>
+              </button>
+              <button
+                className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
+                id="button"
+                type="button"
+                style={{ width: "40px" }}
+                onClick={() => {
+                  if (cart > 0) setCartQuantity(cart - 1);
+                  if (product.quantity > 0) product.quantity -= 1;
+                  console.log("- button is clicked");
+                }}
+              >
+                <b>-</b>
+              </button>
             </div>
           </div>
         ))}
@@ -91,7 +86,7 @@ const render_products = (ProductsCategory, cart, { setCartQuantity }) => {
 
 const App = () => {
   const [ProductsCategory, setProductsCategory] = useState(Products.phones); // ProductsCategory is used to display the products onto the webpage
-  const [query, setQuery] = useState("Search for a product"); // query is used to collect the input from the user when they use the search feature
+  const [query, setQuery] = useState(""); // query is used to collect the input from the user when they use the search feature
   const [cart, setCartQuantity] = useState(0); //c art is used to keep track of total number of items in the cart
 
   // when input is typed into the search bar, handleChange() updates ProductsCategory with the correct products to show based on the user's input
