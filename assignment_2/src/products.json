@@ -25,7 +25,7 @@
       "rating": { "rate": 4.6, "count": 120 }
     },
     {
-      "id": 5,
+      "id": 4,
       "title": "iPhone 14 Pro Max",
       "price": 830.0,
       "description": "The iPhone 14 Pro Max boasts a 6.7-inch Super Retina XDR display, A15 Bionic chip, and a Pro camera system with Photonic Engine. It offers up to 1TB storage, ProMotion technology, and is protected by Ceramic Shield. Its standout feature is the Dynamic Island, enhancing interactions with a fluid user interface.",
@@ -33,7 +33,7 @@
       "rating": { "rate": 4.2, "count": 120 }
     },
     {
-      "id": 6,
+      "id": 5,
       "title": "iPhone 15",
       "price": 800.0,
       "description": "The iPhone 15 is part of Apple's newest lineup of iPhones. The iPhone 15 boasts a 6.1-inch super retina XDR OLED display, packing Apple's A16 Bionic chip. The iPhone 15 continues to use an advanced dual-camera system by coming with a 48MP main camera and a 12MP ultra-wide camera, capable of 4K video recording.",
@@ -41,7 +41,7 @@
       "rating": { "rate": 4.8, "count": 120 }
     },
     {
-      "id": 7,
+      "id": 6,
       "title": "iPhone 15 Pro Max",
       "price": 1200.0,
       "description": "The iPhone 15 Pro Max, Apple's premium handset, features a 6.7-inch Super Retina XDR display, A17 Pro chip, and a 48MP Pro camera system. It offers up to 1TB storage, 5G capability, and enhanced durability with Ceramic Shield. Its standout feature is the Dynamic Island, offering an intuitive user interface experience.",
