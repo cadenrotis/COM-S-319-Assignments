@@ -123,6 +123,9 @@ const App = () => {
   const [cart, setCartQuantity] = useState([]); //cart is an array that'll store the products that the user is interested in buying
   const [cartTotal, setCartTotal] = useState(0); //cartTotal holds the total price of items in the cart
 
+  const { register, handleSubmit, formState: { errors } } = useForm(); //register for payment info
+  const [dataForm,setDataForm] = useState({}); //for storing payment info
+
   // when input is typed into the search bar, handleChange() updates ProductsCategory with the correct products to show based on the user's input
   const handleChange = (e) => {
     setQuery(e.target.value);
@@ -268,6 +271,10 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
 
   //displays the cart
   function CartView() {
+    const onConfirm = data => {
+      setDataForm(data);
+    }
+
     return (
       <div>
         <div
@@ -330,19 +337,32 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
         <h1 style={{ fontSize: "30px" }}>
           <b>Payment Information</b>
         </h1>
-        <p>
-          Add input fields for user's name, email, card, address1, city, state,
-          zip
-        </p>
+        <form onConfirm={handleSubmit={onConfirm}}>
+          <input {...register("name", { required: true})} placeholder="Name"/>
+          {errors.name && <p>Name is required.</p>}
+          <input {...register("email", { required: true})} placeholder="email Address"/>
+          {errors.email && <p>email address is required.</p>}
+          <input {...register("card", { required: true})} placeholder="Card Number"/>
+          {errors.card && <p>Card number is required.</p>}
+          <input {...register("address", { required: true})} placeholder="Address"/>
+          {errors.address && <p>Address is required.</p>}
+          <input {...register("city", { required: true})} placeholder="City"/>
+          {errors.city && <p>City is required.</p>}
+          <input {...register("state", { required: true})} placeholder="State"/>
+          {errors.state && <p>State is required.</p>}
+          <input {...register("zip", { required: true})} placeholder="Zip Code"/>
+          {errors.zip && <p>Zip code is required.</p>}
+
+          <button
+            className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
+            style={{ marginLeft: "50px" }}
+            onClick={switchToConfirmView}
+          >
+          Order
+          </button>
+        </form>
         <br />
 
-        <button
-          className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
-          style={{ marginLeft: "50px" }}
-          onClick={switchToConfirmView}
-        >
-          Order
-        </button>
       </div>
     );
   }
@@ -364,6 +384,11 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
           </button>
         </div>
         <h1>This is the confirmation view</h1>
+        <h2>{dataForm.name}</h2>
+        <p>{dataForm.email}</p>
+        <p>{dataForm.card}</p>
+        <p>{dataForm.address}</p>
+        <p>{dataForm.city}, {dataForm.state} {dataForm.zip}</p>
       </div>
     );
   }
@@ -375,6 +400,7 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
 
     setCartView(false);
     setConfirmView(false);
+    setDataForm();
   };
   const switchToCartView = () => {
     if (cartView === false) setCartView(true);
