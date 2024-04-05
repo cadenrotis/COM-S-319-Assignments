@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import Products from "./products.json";
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 //this function will render the catalog of products and create buttons for users to add the products to their cart
 const render_products = (ProductsCategory, cart, { setCartQuantity }) => {
@@ -9,7 +9,6 @@ const render_products = (ProductsCategory, cart, { setCartQuantity }) => {
   const addToCart = (el) => {
     setCartQuantity([...cart, el]); //uses the spread operator
   };
-
   //removing products from the cart
   const removeFromCart = (el) => {
     let itemFound = false;
@@ -35,7 +34,7 @@ const render_products = (ProductsCategory, cart, { setCartQuantity }) => {
     <div className="category-section fixed">
       <div
         className="m-6 p-3 mt-10 ml-0 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-6 xl:gap-x-10"
-        style={{ maxHeight: "550px", overflowY: "scroll"}}
+        style={{ maxHeight: "550px", overflowY: "scroll" }}
       >
         {ProductsCategory.map((product, index) => (
           <div>
@@ -119,12 +118,8 @@ const App = () => {
 
   const [ProductsCategory, setProductsCategory] = useState(Products.phones); // ProductsCategory is used to display the products onto the webpage
   const [query, setQuery] = useState(""); // query is used to collect the input from the user when they use the search feature
-
   const [cart, setCartQuantity] = useState([]); //cart is an array that'll store the products that the user is interested in buying
   const [cartTotal, setCartTotal] = useState(0); //cartTotal holds the total price of items in the cart
-
-  const { register, handleSubmit, formState: { errors } } = useForm(); //register for payment info
-  const [dataForm,setDataForm] = useState({}); //for storing payment info
 
   // when input is typed into the search bar, handleChange() updates ProductsCategory with the correct products to show based on the user's input
   const handleChange = (e) => {
@@ -136,13 +131,14 @@ const App = () => {
         .includes(e.target.value.toLowerCase());
     });
     setProductsCategory(results);
+
+    console.log("handle change");
   };
 
   //this is called every time you add or remove an item from the cart
   useEffect(() => {
     total();
   }, [cart]);
-
   const total = () => {
     let totalVal = 0;
     for (let i = 0; i < cart.length; i++) {
@@ -271,10 +267,6 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
 
   //displays the cart
   function CartView() {
-    const onConfirm = data => {
-      setDataForm(data);
-    }
-
     return (
       <div>
         <div
@@ -337,36 +329,22 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
         <h1 style={{ fontSize: "30px" }}>
           <b>Payment Information</b>
         </h1>
-        <form onConfirm={handleSubmit={onConfirm}}>
-          <input {...register("name", { required: true})} placeholder="Name"/>
-          {errors.name && <p>Name is required.</p>}
-          <input {...register("email", { required: true})} placeholder="email Address"/>
-          {errors.email && <p>email address is required.</p>}
-          <input {...register("card", { required: true})} placeholder="Card Number"/>
-          {errors.card && <p>Card number is required.</p>}
-          <input {...register("address", { required: true})} placeholder="Address"/>
-          {errors.address && <p>Address is required.</p>}
-          <input {...register("city", { required: true})} placeholder="City"/>
-          {errors.city && <p>City is required.</p>}
-          <input {...register("state", { required: true})} placeholder="State"/>
-          {errors.state && <p>State is required.</p>}
-          <input {...register("zip", { required: true})} placeholder="Zip Code"/>
-          {errors.zip && <p>Zip code is required.</p>}
-
-          <button
-            className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
-            style={{ marginLeft: "50px" }}
-            onClick={switchToConfirmView}
-          >
-          Order
-          </button>
-        </form>
+        <p>
+          Add input fields for user's name, email, card, address1, city, state,
+          zip
+        </p>
         <br />
 
+        <button
+          className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
+          style={{ marginLeft: "50px" }}
+          onClick={switchToConfirmView}
+        >
+          Order
+        </button>
       </div>
     );
   }
-
   //displays a screen for the user to confirm their order
   function ConfirmView() {
     return (
@@ -384,11 +362,6 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
           </button>
         </div>
         <h1>This is the confirmation view</h1>
-        <h2>{dataForm.name}</h2>
-        <p>{dataForm.email}</p>
-        <p>{dataForm.card}</p>
-        <p>{dataForm.address}</p>
-        <p>{dataForm.city}, {dataForm.state} {dataForm.zip}</p>
       </div>
     );
   }
@@ -400,7 +373,6 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
 
     setCartView(false);
     setConfirmView(false);
-    setDataForm();
   };
   const switchToCartView = () => {
     if (cartView === false) setCartView(true);
