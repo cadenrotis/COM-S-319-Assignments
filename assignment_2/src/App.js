@@ -121,8 +121,18 @@ const App = () => {
   const [cart, setCartQuantity] = useState([]); //cart is an array that'll store the products that the user is interested in buying
   const [cartTotal, setCartTotal] = useState(0); //cartTotal holds the total price of items in the cart
 
+  //hooks for the user's input for their payment information
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [dataF, setDataF] = useState({}); //dataF hook will contain the input data
+
   // when input is typed into the search bar, handleChange() updates ProductsCategory with the correct products to show based on the user's input
   const handleChange = (e) => {
+    e.preventDefault();
+    
     setQuery(e.target.value);
     const results = Products.phones.filter((eachProduct) => {
       if (e.target.value === "") return ProductsCategory;
@@ -186,7 +196,10 @@ const App = () => {
     const newCart = []; //newCart will be a copy of cart without any duplicated items
 
     for (let i = 0; i < cart.length; i++) {
-      if (checkForDuplicates(cart, cart[i]) && productInCart(newCart, cart[i])) {
+      if (
+        checkForDuplicates(cart, cart[i]) &&
+        productInCart(newCart, cart[i])
+      ) {
         console.log("There was a duplicate");
         continue;
       }
@@ -224,6 +237,51 @@ const App = () => {
     return cartItems;
   }
 
+  //will display the list of items in the user's cart in a different format for the confirmation view
+  function summaryOfCart() {
+    const newCart = []; //newCart will be a copy of cart without any duplicated items
+
+    for (let i = 0; i < cart.length; i++) {
+      if (
+        checkForDuplicates(cart, cart[i]) &&
+        productInCart(newCart, cart[i])
+      ) {
+        console.log("There was a duplicate");
+        continue;
+      }
+
+      newCart.push(cart[i]);
+    }
+
+    for (let i = 0; i < newCart.length; i++) {
+      console.log(newCart[i].title);
+    }
+
+    //displays the items that are in the cart
+    const cartItems = newCart.map((el) => (
+      <div>
+        <div
+          className="py-8"
+          style={{ display: "flex", justifyContent: "center" }}
+          key={el.id}
+        >
+          <img
+            style={{ marginLeft: "5px" }}
+            class="img-fluid"
+            src={el.image}
+            width={120}
+          />
+          <p style={{ marginTop: "50px", marginLeft: "50px" }}>
+            {el.title} - {howManyofThis(el.id)} x ${el.price} = $
+            {howManyofThis(el.id) * el.price}
+          </p>
+        </div>
+      </div>
+    ));
+
+    return cartItems;
+  }
+
   //displays the browse view with all of the products
   function BrowseView() {
     return (
@@ -234,12 +292,13 @@ const App = () => {
         >
           <input
             className="border border-gray-30 text-gray-900 text-sm rounded-lg
-focus:ring-blue-500 focus:border-blue-500 block w-1/12 p-1 dark:bg-white-700
+focus:ring-blue-500 focus:border-blue-500 block w-1/11 p-1 dark:bg-white-700
 dark:border-gray-300 dark:placeholder-gray-400 dark:text-black
 dark:focus:ring-blue-500 dark:focus:border-blue-500"
             type="search"
             value={query}
             onChange={handleChange}
+            placeholder="Search for a product"
           />
           <button
             className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
@@ -267,6 +326,15 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
 
   //displays the cart
   function CartView() {
+    const onSubmit = (data) => {
+      console.log(data); // log all data
+      console.log(data.fullName); // log only fullname
+
+      // update hooks
+      setDataF(data); //update dataF hook to contain the input data
+      switchToConfirmView(); //switch to the confirmation view
+    };
+
     return (
       <div>
         <div
@@ -329,24 +397,73 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
         <h1 style={{ fontSize: "30px" }}>
           <b>Payment Information</b>
         </h1>
-        <p>
-          Add input fields for user's name, email, card, address1, city, state,
-          zip
-        </p>
-        <br />
-
-        <button
-          className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
-          style={{ marginLeft: "50px" }}
-          onClick={switchToConfirmView}
-        >
-          Order
-        </button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            {...register("fullName", { required: true })}
+            placeholder="Full Name"
+            style={{ marginBottom: "10px" }}
+          />
+          {errors.fullName && <p>Full Name is required.</p>} <br></br>
+          <input
+            {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+            placeholder="Email"
+            style={{ marginBottom: "10px" }}
+          />
+          {errors.email && <p>Email is required.</p>} <br></br>
+          <input
+            {...register("creditCard", { required: true })}
+            placeholder="Credit Card"
+            style={{ marginBottom: "10px" }}
+          />
+          {errors.creditCard && <p>Credit Card is required.</p>} <br></br>
+          <input
+            {...register("address", { required: true })}
+            placeholder="Address"
+            style={{ marginBottom: "10px" }}
+          />
+          {errors.address && <p>Address is required.</p>} <br></br>
+          <input
+            {...register("address2")}
+            placeholder="Address 2"
+            style={{ marginBottom: "10px" }}
+          />{" "}
+          <br></br>
+          <input
+            {...register("city", { required: true })}
+            placeholder="City"
+            style={{ marginBottom: "10px" }}
+          />
+          {errors.city && <p>City is required.</p>} <br></br>
+          <input
+            {...register("state", { required: true })}
+            placeholder="State"
+            style={{ marginBottom: "10px" }}
+          />
+          {errors.state && <p>State is required.</p>} <br></br>
+          <input
+            {...register("zip", { required: true })}
+            placeholder="Zip"
+            style={{ marginBottom: "10px" }}
+          />
+          {errors.zip && <p>Zip is required.</p>} <br></br>
+          <button
+            className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
+            style={{ marginLeft: "10px" }}
+            type="submit"
+          >
+            Submit Order
+          </button>
+        </form>
       </div>
     );
   }
+
   //displays a screen for the user to confirm their order
   function ConfirmView() {
+    const updateHooks = () => {
+      switchToCartView(); //switch back to the cart view
+    };
+
     return (
       <div>
         <div
@@ -356,12 +473,61 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
           <button
             className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
             style={{ marginLeft: "50px" }}
-            onClick={switchToBrowseView}
+            onClick={switchToFreshBrowseView}
           >
-            Go back to the catalog
+            Go back to the Catalog (will remove everything from your cart)
           </button>
         </div>
-        <h1>This is the confirmation view</h1>
+        <h1 style={{ fontSize: "30px", marginBottom: "10px", textAlign: "center"}}>
+          <b>Order Summary</b>
+        </h1>
+        <div>{summaryOfCart()}</div>
+        <p style={{textAlign: "center", fontSize: "20px"}}>
+          <b>Order total: ${cartTotal}</b>
+        </p>
+        <br></br>
+        <h1 style={{ fontSize: "30px", marginBottom: "10px" }}>
+          <b>Payment Summary</b>
+        </h1>
+        <h3 style={{ marginBottom: "10px" }}>
+          Name: <u>{dataF.fullName}</u>
+        </h3>
+        <p style={{ marginBottom: "10px" }}>
+          Email: <u>{dataF.email}</u>
+        </p>
+        <p style={{ marginBottom: "10px" }}>
+          Credit Card # (last four numbers show only): <u>{dataF.creditCard.substring(dataF.creditCard.length-4, dataF.creditCard.length)}</u>
+        </p>
+        <p style={{ marginBottom: "10px" }}>
+          Address: <u>{dataF.address}</u>
+        </p>
+        <p style={{ marginBottom: "10px" }}>
+          Address 2 (optional): <u>{dataF.address2}</u>
+        </p>
+        <p style={{ marginBottom: "10px" }}>
+          City: <u>{dataF.city}</u>
+        </p>
+        <p style={{ marginBottom: "10px" }}>
+          State: <u>{dataF.state}</u>
+        </p>
+        <p style={{ marginBottom: "10px" }}>
+          Zip code: <u>{dataF.zip}</u>{" "}
+        </p>
+
+        <div
+          className="py-8"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <button
+            className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
+            style={{
+              marginLeft: "50px",
+            }}
+            onClick={updateHooks}
+          >
+            Go back to cart
+          </button>
+        </div>
       </div>
     );
   }
@@ -374,6 +540,20 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
     setCartView(false);
     setConfirmView(false);
   };
+
+  const switchToFreshBrowseView = () => {
+    if (browseView === false) {
+      setBrowseView(true);
+      setCartQuantity([]); //reset the cart to an empty array
+      setDataF([]); //clear the input data for payment information
+      console.log("In fresh browse view" + dataF);
+    } 
+    else setBrowseView(false);
+
+    setCartView(false);
+    setConfirmView(false);
+  };
+
   const switchToCartView = () => {
     if (cartView === false) setCartView(true);
     else setCartView(false);
@@ -381,9 +561,12 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
     setBrowseView(false);
     setConfirmView(false);
   };
+
   const switchToConfirmView = () => {
     if (confirmView === false) setConfirmView(true);
     else setConfirmView(false);
+    console.log("In confirm view" + dataF);
+
 
     setBrowseView(false);
     setCartView(false);
