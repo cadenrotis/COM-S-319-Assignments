@@ -34,7 +34,7 @@ const render_products = (ProductsCategory, cart, { setCartQuantity }) => {
     <div className="category-section fixed">
       <div
         className="m-6 p-3 mt-10 ml-0 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-6 xl:gap-x-10"
-        style={{ maxHeight: "550px", overflowY: "scroll" }}
+        style={{ maxHeight: "750px", overflowY: "scroll" }}
       >
         {ProductsCategory.map((product, index) => (
           <div>
@@ -105,24 +105,6 @@ const render_products = (ProductsCategory, cart, { setCartQuantity }) => {
             </div>
           </div>
         ))}
-        <div>
-          <footer class="b-footer">
-            <div>
-              <p
-                style={{
-                  textAlign: "center",
-                  fontSize: "20px",
-                  width: "1450px",
-                  display: "flex",
-                  justifyContent: "center",
-                  backgroundColor: "rgb(224, 224, 224)",
-                }}
-              >
-                &copy; Caden Otis and Brandon Rau 2024
-              </p>
-            </div>
-          </footer>
-        </div>
       </div>
     </div>
   );
@@ -267,55 +249,38 @@ function CartView({
       <h1 style={{ fontSize: "30px", marginBottom: "10px" }}>
         <b>Payment Information</b>
       </h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register("fullName", { required: true })}
-          placeholder="Full Name"
-          style={{ marginBottom: "10px", marginLeft: "10px" }}
-        />
-        {errors.fullName && <p>Full Name is required.</p>} <br></br>
-        <input
-          {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
-          placeholder="Email"
-          style={{ marginBottom: "10px", marginLeft: "10px" }}
-        />
-        {errors.email && <p>Email is required.</p>} <br></br>
-        <input
-          {...register("creditCard", { required: true })}
-          placeholder="Credit Card"
-          style={{ marginBottom: "10px", marginLeft: "10px" }}
-        />
-        {errors.creditCard && <p>Credit Card is required.</p>} <br></br>
-        <input
-          {...register("address", { required: true })}
-          placeholder="Address"
-          style={{ marginBottom: "10px", marginLeft: "10px" }}
-        />
-        {errors.address && <p>Address is required.</p>} <br></br>
-        <input
-          {...register("address2")}
-          placeholder="Address 2"
-          style={{ marginBottom: "10px", marginLeft: "10px" }}
-        />{" "}
-        <br></br>
-        <input
-          {...register("city", { required: true })}
-          placeholder="City"
-          style={{ marginBottom: "10px", marginLeft: "10px" }}
-        />
-        {errors.city && <p>City is required.</p>} <br></br>
-        <input
-          {...register("state", { required: true })}
-          placeholder="State"
-          style={{ marginBottom: "10px", marginLeft: "10px" }}
-        />
-        {errors.state && <p>State is required.</p>} <br></br>
-        <input
-          {...register("zip", { required: true })}
-          placeholder="Zip"
-          style={{ marginBottom: "10px", marginLeft: "10px" }}
-        />
-        {errors.zip && <p>Zip is required.</p>} <br></br>
+      <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
+        <div className="form-group">
+          <input {...register("fullName", { required: true})} placeholder="Full Name" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          {errors.fullName && <p className="text-danger">Full name is required!</p>}
+        </div>
+        <div className="form-group">
+          <input {...register("email", { required: true, pattern: /^\S+@\S+$/i })} placeholder="Email" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          {errors.email && <p className="text-danger">Invalid email!</p>}
+        </div>
+        <div className="form-group">
+          <input {...register("creditCard", { required: true })} placeholder="Credit Card" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          {errors.creditCard && <p className="text-danger">Invalid credit card number!</p>}
+        </div>
+        <div className="form-group">
+          <input {...register("address", { required: true })} placeholder="Address" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          {errors.address && <p className="text-danger">Address is required!</p>}
+        </div>
+        <div className="form-group">
+          <input {...register("address2")} placeholder="Address 2 (optional)" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+        </div>
+        <div className="form-group">
+          <input {...register("city", { required: true })} placeholder="City" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          {errors.city && <p className="text-danger">City is required!</p>}
+        </div>
+        <div className="form-group">
+          <input {...register("state", { required: true })} placeholder="State" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          {errors.state && <p className="text-danger">State is required!</p>}
+        </div>
+        <div className="form-group">
+          <input {...register("zip", { required: true, pattern: /^\d{5}$/ })} placeholder="Zip" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }}/>
+          {errors.zip && <p className="text-danger">Invalid zip code! (5-digits only)</p>}
+        </div>
         <button
           className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
           style={{ marginLeft: "10px" }}
@@ -325,26 +290,28 @@ function CartView({
         </button>
       </form>
       <br></br>
-      <hr></hr>
+      <hr style={{
+        height: "1px",
+        border: "none",
+        color: "#333",
+        backgroundColor: "#333",
+      }}></hr>
       <br></br>
       <div>
-          <footer class="b-footer">
-            <div>
-              <p
-                style={{
-                  textAlign: "center",
-                  fontSize: "20px",
-                  width: "1530px",
-                  display: "flex",
-                  justifyContent: "center",
-                  backgroundColor: "rgb(224, 224, 224)",
-                }}
-              >
-                &copy; Caden Otis and Brandon Rau 2024
-              </p>
-            </div>
-          </footer>
-        </div>
+        <footer class="b-footer">
+          <div>
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "20px",
+                backgroundColor: "rgb(224, 224, 224)"
+              }}
+            >
+              &copy; Caden Otis and Brandon Rau 2024
+            </p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }
@@ -376,7 +343,7 @@ function ConfirmView({
           style={{ marginLeft: "50px" }}
           onClick={switchToFreshBrowseView}
         >
-          Go back to the Catalog (will remove everything from your cart)
+          Go back to a fresh browse view
         </button>
         <button
           className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
@@ -425,7 +392,7 @@ function ConfirmView({
         Email: <u>{dataF.email}</u>
       </p>
       <p style={{ marginBottom: "10px", textAlign: "center" }}>
-        Credit Card # (last four numbers show only):{" "}
+        Credit Card # (last four numbers shown only):{" "}
         <u>
           {dataF.creditCard.substring(
             dataF.creditCard.length - 4,
@@ -449,26 +416,28 @@ function ConfirmView({
         Zip code: <u>{dataF.zip}</u>{" "}
       </p>
       <br></br>
-      <hr></hr>
+      <hr style={{
+        height: "1px",
+        border: "none",
+        color: "#333",
+        backgroundColor: "#333",
+      }}></hr>
       <br></br>
       <div>
-          <footer class="b-footer">
-            <div>
-              <p
-                style={{
-                  textAlign: "center",
-                  fontSize: "20px",
-                  width: "1530px",
-                  display: "flex",
-                  justifyContent: "center",
-                  backgroundColor: "rgb(224, 224, 224)",
-                }}
-              >
-                &copy; Caden Otis and Brandon Rau 2024
-              </p>
-            </div>
-          </footer>
-        </div>
+        <footer class="b-footer">
+          <div>
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "20px",
+                backgroundColor: "rgb(224, 224, 224)"
+              }}
+            >
+              &copy; Caden Otis and Brandon Rau 2024
+            </p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }
