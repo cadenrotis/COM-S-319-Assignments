@@ -251,7 +251,7 @@ function CartView({
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
         <div className="form-group">
-          <input {...register("fullName", { required: true})} placeholder="Full Name" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          <input {...register("fullName", { required: true, validate: value => isNaN(value)})} placeholder="Full Name" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
           {errors.fullName && <p className="text-danger">Full name is required!</p>}
         </div>
         <div className="form-group">
@@ -259,8 +259,8 @@ function CartView({
           {errors.email && <p className="text-danger">Invalid email!</p>}
         </div>
         <div className="form-group">
-          <input {...register("creditCard", { required: true })} placeholder="Credit Card" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
-          {errors.creditCard && <p className="text-danger">Invalid credit card number!</p>}
+          <input {...register("creditCard", { required: true, pattern: /^\d{16}$/ })} placeholder="Credit Card" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          {errors.creditCard && <p className="text-danger">Invalid credit card number! (Has to be 16 digits)</p>}
         </div>
         <div className="form-group">
           <input {...register("address", { required: true })} placeholder="Address" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
@@ -270,16 +270,16 @@ function CartView({
           <input {...register("address2")} placeholder="Address 2 (optional)" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
         </div>
         <div className="form-group">
-          <input {...register("city", { required: true })} placeholder="City" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          <input {...register("city", { required: true, validate: value => isNaN(value) })} placeholder="City" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
           {errors.city && <p className="text-danger">City is required!</p>}
         </div>
         <div className="form-group">
-          <input {...register("state", { required: true })} placeholder="State" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
+          <input {...register("state", { required: true, validate: value => isNaN(value) })} placeholder="State" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }} />
           {errors.state && <p className="text-danger">State is required!</p>}
         </div>
         <div className="form-group">
           <input {...register("zip", { required: true, pattern: /^\d{5}$/ })} placeholder="Zip" className="form-control"  style={{ marginBottom: "10px", marginLeft: "10px" }}/>
-          {errors.zip && <p className="text-danger">Invalid zip code! (5-digits only)</p>}
+          {errors.zip && <p className="text-danger">Invalid zip code! (Has to be 5 digits)</p>}
         </div>
         <button
           className="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg p-1"
