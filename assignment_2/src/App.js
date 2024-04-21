@@ -34,7 +34,7 @@ const render_products = (ProductsCategory, cart, { setCartQuantity }) => {
     <div className="category-section fixed">
       <div
         className="m-6 p-3 mt-10 ml-0 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-6 xl:gap-x-10"
-        style={{ maxHeight: "750px", overflowY: "scroll" }}
+        style={{ maxHeight: "550px", overflowY: "scroll" }}
       >
         {ProductsCategory.map((product, index) => (
           <div>
