@@ -844,7 +844,7 @@ const Products = () => {
             .then(response => response.json())
             .then(products => setTheProducts(products));
 
-    }); // update the theProducts hook anytime the webpage is rendered
+    }, [addView, showView, updateView, deleteView, studentView]); // update the theProducts hook anytime a different view is rendered
 
     // functions that handle the switching between the three views
     const switchToAddView = () => {
