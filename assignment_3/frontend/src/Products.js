@@ -122,7 +122,20 @@ function AddView({
                 <br></br>
             </div>
 
-            <h1 style={{ display: "flex", justifyContent: "center" }}>Add a New Product to the Catalog</h1>
+            <br></br>
+
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <div>
+                    <h1 style={{ textAlign: "center" }}><u>Add a New Product to the Catalog</u></h1>
+                    <p className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg p-1"
+                        style={{ fontSize: "20px", width: "800px", borderRadius: "10px", backgroundColor: "rgb(255, 255, 102)", textAlign: "center" }}>
+                        In this view, you will be able to add a new product to the catalog of
+                        products. You'll be able to pick from any products that are in the fake store catalog of products. In order to do this, you'll
+                        need to input the id of the product that you want to add in the input search bar. Once the product has been added, a preview of
+                        the product that's just been added to the catalog will appear.
+                    </p>
+                </div>
+            </div>
 
             <br></br>
             <br></br>
@@ -248,7 +261,19 @@ function ShowView({
                 <br></br>
             </div>
 
-            <h1 style={{ display: "flex", justifyContent: "center" }}>Product Catalog</h1>
+            <br></br>
+
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <div>
+                    <h1 style={{ textAlign: "center" }}><u>Product Catalog</u></h1>
+                    <p className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg p-1"
+                        style={{ fontSize: "20px", width: "800px", borderRadius: "10px", backgroundColor: "rgb(255, 255, 102)", textAlign: "center" }}>
+                        In this view, you will be able to see all of the products in the product catalog. Towards the bottom, there is a search feature
+                        that'll allow you to find a specific product. All you need to do is input the product's id, then it'll show up underneath the
+                        input form.
+                    </p>
+                </div>
+            </div>
 
             <br></br>
             <br></br>
@@ -274,7 +299,7 @@ function ShowView({
 
             <br></br>
 
-            <p style={{ display: "flex", justifyContent: "center" }}><u>Input a product's id to get that singular product:</u></p>
+            <p style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}><u>Input a product's id to get that singular product:</u></p>
             <div style={{ display: "flex", justifyContent: "center" }}>
                 <input type="number" id="inputProductName" placeholder="Enter Product ID"></input>
                 <button type="button" onClick={getInputProduct}>One Product</button>
@@ -444,7 +469,20 @@ function UpdateView({
                 </button>
             </div>
 
-            <h1 style={{ display: "flex", justifyContent: "center" }}>Update a Product's Price</h1>
+            <br></br>
+
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <div>
+                    <h1 style={{ textAlign: "center" }}><u>Update a Product's Price</u></h1>
+                    <p className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg p-1"
+                        style={{ fontSize: "20px", width: "800px", borderRadius: "10px", backgroundColor: "rgb(255, 255, 102)", textAlign: "center" }}>
+                        In this view, you will be able to update the price of an existing
+                        product in the product catalog. In order to do this, you first need to input the id of the product that you want to update.
+                        Then a preview of the requested product will show up at the bottom to make sure that you are updating the correct product.
+                        There will then be a second input bar down below the preview to allow you to input the new price of the requested product.
+                    </p>
+                </div>
+            </div>
 
             <br></br>
             <br></br>
@@ -627,7 +665,20 @@ function DeleteView({
                 </button>
             </div>
 
-            <h1 style={{ display: "flex", justifyContent: "center" }}>Delete a Product from the Catalog</h1>
+            <br></br>
+
+
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <div>
+                    <h1 style={{ textAlign: "center" }}><u>Delete a Product from the Catalog</u></h1>
+                    <p className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg p-1"
+                        style={{ fontSize: "20px", width: "800px", borderRadius: "10px", backgroundColor: "rgb(255, 255, 102)", textAlign: "center" }}>
+                        In this view, you will be delete a product from the catalog. To do
+                        this, you'll need to input the id of the desired product in the input search bar. After doing this, a preview of the
+                        inputted product will appear down below, with two buttons to either confirm the deletion or cancel the deletion.
+                    </p>
+                </div>
+            </div>
 
             <br></br>
             <br></br>
@@ -720,10 +771,26 @@ function StudentView({
                 <br></br>
             </div>
 
+            <br></br>
+
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <div>
+                    <h1 style={{ textAlign: "center" }}><u>Student Information</u></h1>
+                    <p className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg p-1"
+                        style={{ fontSize: "20px", width: "800px", borderRadius: "10px", backgroundColor: "rgb(255, 255, 102)", textAlign: "center" }}>
+                        In this view, you'll find information about the students who worked on this webpage/project (name and email), the
+                        course that they're in, the date, the professor's name, and a paragraph introducting and describing their webpage.
+                    </p>
+                </div>
+            </div>
+
+            <br></br>
+
             <h1 style={{ display: "flex", justifyContent: "center" }}>Iowa State University</h1>
             <h1 style={{ display: "flex", justifyContent: "center" }}>COM S 319</h1>
             <h1 style={{ display: "flex", justifyContent: "center" }}>Date: 4/27/2024</h1>
             <h1 style={{ display: "flex", justifyContent: "center" }}>Professor: Dr. Abraham Aldaco</h1>
+
             <br></br>
 
             <h1><u>Students who worked on this webpage:</u></h1>
@@ -736,7 +803,7 @@ function StudentView({
             <h1><u>Project Description:</u></h1>
             <p style={{ fontSize: "20px" }}> For COM S 319, we were tasked with creating a single page website that incorporated multiple views, where each
                 view focuses on utilizing the CRUD operations (Create, Read, Update, and Delete). These CRUD operations will modify a database of fakestore
-                products, which is stored in MongoDB. To access these views, there are four bottoms on top of these views at all times. Just click on one of 
+                products, which is stored in MongoDB. To access these views, there are four bottoms on top of these views at all times. Just click on one of
                 these buttons and it'll take you to a different view. Have fun navigating the webpage that we made and modifying the catalog of products that
                 you'll be able to customize to your liking.
             </p>
