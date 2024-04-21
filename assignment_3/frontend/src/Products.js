@@ -8,6 +8,84 @@ function AddView({
     switchToDeleteView,
     switchToStudentView
 }) {
+    function addNewProduct() {
+        // get products from the fake store catalog
+        fetch("https://fakestoreapi.com/products")
+            .then(response => response.json())
+            .then(fakeStoreProducts => { addTheNewProduct(fakeStoreProducts) });
+
+        function addTheNewProduct(fakeStoreProducts) {
+            let newProduct = {}; // Create a new product object
+            let inputProductID = document.getElementById("getProductById").value;
+            var mainContainer = document.getElementById("addedProduct");
+            let found = false;
+
+            let division = document.createElement("div");
+            mainContainer.innerHTML = ``;
+
+            for (var i = 0; i < fakeStoreProducts.length; i++) {
+                if (fakeStoreProducts[i].id == inputProductID) {
+                    found = true;
+
+                    newProduct = {
+                        id: fakeStoreProducts[i].id,
+                        title: fakeStoreProducts[i].title,
+                        price: fakeStoreProducts[i].price,
+                        description: fakeStoreProducts[i].description,
+                        category: fakeStoreProducts[i].category,
+                        image: fakeStoreProducts[i].image,
+                        rating: {
+                            rate: fakeStoreProducts[i].rating.rate,
+                            count: fakeStoreProducts[i].rating.count
+                        }
+                    }
+
+                    division.innerHTML = `
+                    <br></br>
+                    <p><u><b>New product that has been added to the catalog:</b></u></p>
+                    <div key=${fakeStoreProducts[i].id} style="width: 100px>
+                        <div class="card">
+                            <img src=${fakeStoreProducts[i].image} class="card-img-top" alt=${fakeStoreProducts[i].title} style="object-fit: cover; height: 200px;" />
+                            <div class="card-body">
+                                <h5 class="card-title">${fakeStoreProducts[i].id}. ${fakeStoreProducts[i].title}</h5>
+                                <p style="text-align: center; font-size: 20px; color: green;">$${fakeStoreProducts[i].price}</p>
+                                <p class="card-text"><b>Description</b> - ${fakeStoreProducts[i].description}</p>
+                                <p class="card-text"><b>Tag</b> - ${fakeStoreProducts[i].category}</p>
+                                <p class="card-text"><b>Rating:</b> ${fakeStoreProducts[i].rating.rate} from ${fakeStoreProducts[i].rating.count} people</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                    mainContainer.append(division);
+
+                    break; // break out of the loop once you've found one new product to add to the database
+                }
+            }
+
+            if (!found) {
+                alert("Invalid product. The requested product couldn't be added");
+            }
+            else {
+                // Make the POST request
+                fetch("http://localhost:8081/addProduct", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newProduct)
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('New product added successfully:', data);
+                        alert("New product has been successfully added to the catalog");
+                    })
+            }
+        }
+    }
+
     return (
         <div>
             <div style={{ backgroundColor: "green", display: "flex", justifyContent: "center", height: "80px" }}>
@@ -42,6 +120,24 @@ function AddView({
 
                 <br></br>
                 <br></br>
+            </div>
+
+            <h1 style={{ display: "flex", justifyContent: "center" }}>Add a New Product to the Catalog</h1>
+
+            <br></br>
+            <br></br>
+
+            <p style={{ display: "flex", justifyContent: "center" }}>Click the button to add a new product to the catalog:</p>
+            <form id="my_form" style={{ display: "flex", justifyContent: "center" }}>
+                <input type="number" id="getProductById" placeholder="Enter Product ID" />
+                <button type="button" onClick={addNewProduct}>Add a new product</button>
+            </form>
+
+            <div class="album py-5 bg-body-tertiary">
+                <div class="container">
+                    <div id="addedProduct" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                    </div>
+                </div>
             </div>
 
             <br></br>
@@ -151,6 +247,12 @@ function ShowView({
                 <br></br>
                 <br></br>
             </div>
+
+            <h1 style={{ display: "flex", justifyContent: "center" }}>Product Catalog</h1>
+
+            <br></br>
+            <br></br>
+
             <div className="container mt-3">
                 <div className="row">
                     {theProducts.map(product => ( // map reads the whole theProducts array element-by-element
@@ -169,16 +271,22 @@ function ShowView({
                     ))}
                 </div>
             </div>
+
+            <br></br>
+
+            <p style={{ display: "flex", justifyContent: "center" }}><u>Input a product's id to get that singular product:</u></p>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <input type="number" id="inputProductName" placeholder="Enter Product ID"></input>
+                <button type="button" onClick={getInputProduct}>One Product</button>
+            </div>
+
+            <br></br>
+
             <div class="album py-5 bg-body-tertiary">
                 <div class="container">
                     <div id="searchedProduct" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
                     </div>
                 </div>
-            </div>
-            <br></br>
-            <div>
-                <input type="number" id="inputProductName" placeholder="Enter Product ID"></input>
-                <button type="button" onClick={getInputProduct}>One Product</button>
             </div>
 
             <br></br>
@@ -208,6 +316,101 @@ function UpdateView({
     switchToDeleteView,
     switchToStudentView
 }) {
+
+    // hook to contain the logic for showing and hiding the input bar for inputting a new price of a product
+    const [showPriceInput, setShowPriceInput] = useState(false);
+
+    // fetches a product that matches the input in the search bar to confirm the deletion of it
+    function getInputProduct() {
+        fetch("http://localhost:8081/listProducts")
+            .then(response => response.json())
+            .then(products => loadSingleProduct(products));
+
+        function loadSingleProduct(products) {
+            var mainContainer = document.getElementById("updateConfirmation");
+            let inputProductID = document.getElementById("getProductById").value;
+
+            let division = document.createElement("div");
+            mainContainer.innerHTML = ``;
+            let found = false;
+
+            for (var i = 0; i < products.length; i++) {
+                if (products[i].id == inputProductID) {
+                    found = true;
+
+                    division.innerHTML = `
+                    <br></br>
+                    <p><u><b>Requested Product via Search:</b></u></p>
+                    <div key=${products[i].id} style="width: 100px>
+                        <div class="card">
+                            <img src=${products[i].image} class="card-img-top" alt=${products[i].title} style="object-fit: cover; height: 200px;" />
+                            <div class="card-body">
+                                <h5 class="card-title">${products[i].id}. ${products[i].title}</h5>
+                                <p style="text-align: center; font-size: 20px; color: green;">$${products[i].price}</p>
+                                <p class="card-text"><b>Description</b> - ${products[i].description}</p>
+                                <p class="card-text"><b>Tag</b> - ${products[i].category}</p>
+                                <p class="card-text"><b>Rating:</b> ${products[i].rating.rate} from ${products[i].rating.count} people</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                    mainContainer.append(division);
+                    setShowPriceInput(true); // show the input to change a product's price
+                }
+                // clears the "One Product" view if nothing is in the form and the search button is pressed
+                if (inputProductID == '') {
+                    division.innerHTML = ``;
+
+                    mainContainer.append(division);
+                }
+            }
+
+            if (!found) {
+                alert("Invalid product. The requested product is not in the catalog");
+            }
+        }
+    }
+
+    // update the price of the requested product
+    function updateProductPrice() {
+        // Fetch the value from the input field
+        let id = document.getElementById("getProductById").value;
+        console.log(id);
+
+        let updatedPrice = document.getElementById("updatedProductPrice").value;
+
+        fetch(`http://localhost:8081/updateProduct/${id}`, {
+            method: 'PUT',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(
+                {
+                    "price": updatedPrice
+                }
+            )
+        })
+            .then(response => response.json())
+
+        alert("Product's price has successfully been updated");
+
+        // clear the input and the delete confirmation section
+        var mainContainer = document.getElementById("updateConfirmation");
+        mainContainer.innerHTML = ``;
+        document.getElementById("getProductById").value = '';
+
+        setShowPriceInput(false); // Hide the input to change a product's price
+    }
+
+    // the deletion was canceled, so don't update the product's price
+    function cancelTheUpdate() {
+        // clear the input and the delete confirmation section
+        var mainContainer = document.getElementById("updateConfirmation");
+        mainContainer.innerHTML = ``;
+        document.getElementById("getProductById").value = '';
+
+        setShowPriceInput(false); // Hide the input to change a product's price
+    }
+
     return (
         <div>
             <div style={{ backgroundColor: "green", display: "flex", justifyContent: "center", height: "80px" }}>
@@ -239,10 +442,42 @@ function UpdateView({
                 >
                     Student Information
                 </button>
-
-                <br></br>
-                <br></br>
             </div>
+
+            <br></br>
+            <br></br>
+
+            <h1 style={{ display: "flex", justifyContent: "center" }}>Update a Product's Price</h1>
+
+            <br></br>
+            <br></br>
+
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <input type="number" id="getProductById" placeholder="Enter Product ID" />
+                <button onClick={getInputProduct}>Update Product:</button>
+            </div>
+
+            <div class="album py-5 bg-body-tertiary">
+                <div class="container">
+                    <div id="updateConfirmation" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                    </div>
+                </div>
+            </div>
+
+            <br></br>
+            <br></br>
+
+            {showPriceInput && (
+                <>
+                    <p style={{ fontSize: "20px", textAlign: "center" }}>Input the new price of the requested product:</p>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <input type="number" id="updatedProductPrice" placeholder="Enter New Price" />
+                        <button onClick={updateProductPrice}>Update Product's Price</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button onClick={cancelTheUpdate}>Cancel</button>
+                    </div>
+                </>
+            )}
+
 
             <br></br>
             <br></br>
@@ -269,9 +504,12 @@ function DeleteView({
     switchToAddView,
     switchToUpdateView,
     switchToShowView,
-    switchToStudentView,
-    setTheProducts
+    switchToStudentView
 }) {
+
+    // hook to contain the logic for showing and hiding the confirmation buttons
+    const [showConfirmationButtons, setShowConfirmationButtons] = useState(false);
+
     // fetches a product that matches the input in the search bar to confirm the deletion of it
     function getInputProduct() {
         fetch("http://localhost:8081/listProducts")
@@ -284,9 +522,12 @@ function DeleteView({
 
             let division = document.createElement("div");
             mainContainer.innerHTML = ``;
+            let found = false;
 
             for (var i = 0; i < products.length; i++) {
                 if (products[i].id == inputProductID) {
+                    found = true;
+
                     division.innerHTML = `
                     <br></br>
                     <p><u><b>Requested Product via Search:</b></u></p>
@@ -305,6 +546,7 @@ function DeleteView({
                 `;
 
                     mainContainer.append(division);
+                    setShowConfirmationButtons(true); // show the confirmation buttons
                 }
                 // clears the "One Product" view if nothing is in the form and the search button is pressed
                 if (inputProductID == '') {
@@ -312,6 +554,10 @@ function DeleteView({
 
                     mainContainer.append(division);
                 }
+            }
+
+            if (!found) {
+                alert("Invalid product. The requested product is not in the catalog");
             }
         }
     }
@@ -332,11 +578,23 @@ function DeleteView({
             .then(response => response.json())
 
         alert("Product has successfully been deleted!");
+
+        // clear the input and the delete confirmation section
+        var mainContainer = document.getElementById("deletionConfirmation");
+        mainContainer.innerHTML = ``;
+        document.getElementById("getProductById").value = '';
+
+        setShowConfirmationButtons(false); // Hide the confirmation buttons
     }
 
     // the deletion was canceled, so don't delete the product
     function rejectDelete() {
-        alert("test2");
+        // clear the input and the delete confirmation section
+        var mainContainer = document.getElementById("deletionConfirmation");
+        mainContainer.innerHTML = ``;
+        document.getElementById("getProductById").value = '';
+
+        setShowConfirmationButtons(false); // Hide the confirmation buttons
     }
 
     return (
@@ -375,6 +633,11 @@ function DeleteView({
             <br></br>
             <br></br>
 
+            <h1 style={{ display: "flex", justifyContent: "center" }}>Delete a Product from the Catalog</h1>
+
+            <br></br>
+            <br></br>
+
             <div style={{ display: "flex", justifyContent: "center" }}>
                 <input type="number" id="getProductById" placeholder="Enter Product ID" />
                 <button onClick={getInputProduct}>Delete Product:</button>
@@ -390,11 +653,15 @@ function DeleteView({
             <br></br>
             <br></br>
 
-            <p style={{ fontSize: "20px", textAlign: "center" }}>Do you confirm that you want to delete this product?</p>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-                <button id="confirmButton" onClick={confirmDelete}>Yes, I want to confirm</button>
-                <button id="rejectButton" onClick={rejectDelete}>No, I don't confirm</button>
-            </div>
+            {showConfirmationButtons && (
+                <>
+                    <p style={{ fontSize: "20px", textAlign: "center" }}>Do you confirm that you want to delete this product?</p>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <button id="confirmButton" onClick={confirmDelete}>Yes, I want to confirm</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button id="rejectButton" onClick={rejectDelete}>No, I don't confirm</button>
+                    </div>
+                </>
+            )}
 
             <br></br>
             <br></br>
@@ -475,7 +742,9 @@ function StudentView({
             <h1><u>Project Description:</u></h1>
             <p style={{ fontSize: "20px" }}> For COM S 319, we were tasked with creating a single page website that incorporated multiple views, where each
                 view focuses on utilizing the CRUD operations (Create, Read, Update, and Delete). These CRUD operations will modify a database of fakestore
-                products, which is stored in MongoDB.
+                products, which is stored in MongoDB. To access these views, there are four bottoms on top of these views at all times. Just click on one of 
+                these buttons and it'll take you to a different view. Have fun navigating the webpage that we made and modifying the catalog of products that
+                you'll be able to customize to your liking.
             </p>
 
             <br></br>
@@ -509,12 +778,12 @@ const Products = () => {
     const [theProducts, setTheProducts] = useState([]);
 
     useEffect(() => {
-        // Read the data of robots from the database:
+        // Read the data of products from the database:
         fetch("http://localhost:8081/listProducts")
             .then(response => response.json())
             .then(products => setTheProducts(products));
 
-    }, []); // the empty brackets here means that useEffect() will only run on the first render
+    }); // update the theProducts hook anytime the webpage is rendered
 
     // functions that handle the switching between the three views
     const switchToAddView = () => {
@@ -574,6 +843,7 @@ const Products = () => {
                 switchToUpdateView={switchToUpdateView}
                 switchToDeleteView={switchToDeleteView}
                 switchToStudentView={switchToStudentView}
+                theProducts={theProducts}
             />}
         {showView && (
             <ShowView
@@ -597,7 +867,6 @@ const Products = () => {
                 switchToUpdateView={switchToUpdateView}
                 switchToShowView={switchToShowView}
                 switchToStudentView={switchToStudentView}
-                setTheProducts={setTheProducts}
             />}
         {studentView &&
             <StudentView

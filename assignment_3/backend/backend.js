@@ -51,6 +51,76 @@ app.get("/:id", async (req, res) => {
     else res.send(results).status(200);
 });
 
+// POST method to add a new product to the database/product catalog
+app.post("/addProduct", async (req, res) => {
+
+    // use try-and-catch in case the server finds an error
+    try {
+        await client.connect();
+        const keys = Object.keys(req.body);
+        const values = Object.values(req.body);
+
+        const newDocument = {
+            "id": req.body.id,
+            "title": req.body.title,
+            "price": req.body.price,
+            "description": req.body.description,
+            "category": req.body.category,
+            "image": req.body.image,
+            "rating": {
+                "rate": req.body.rating.rate,
+                "count": req.body.rating.count
+            }
+        };
+        console.log(newDocument);
+
+        const results = await db
+            .collection("fakestore_catalog")
+            .insertOne(newDocument);
+        res.status(200);
+        res.send(results);
+    }
+
+    catch (error) {
+        console.error("An error occurred:", error);
+        res.status(500).send({ error: 'An internal server error occurred' });
+    }
+
+});
+
+// PUT method to update the price of a product existing in the database
+app.put("/updateProduct/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    const query = { id: id };
+
+    await client.connect();
+    console.log("Product to Update :", id);
+
+    // Data for updating the document, typically comes from the request body
+    console.log(req.body);
+
+    const updateData = {
+        $set: {
+            "price": req.body.price,
+        }
+    };
+
+    // read data from robot to update to send to frontend
+    const productUpdated = await db.collection("fakestore_catalog").findOne(query);
+
+    // Add options if needed, for example { upsert: true } to create a document if it doesn't exist
+    const options = {};
+    const results = await db.collection("fakestore_catalog").updateOne(query, updateData, options);
+
+    // If no document was found to update, you can choose to handle it by sending a 404 response
+    if (results.matchedCount === 0) {
+        return res.status(404).send({ message: 'Product not found' });
+    }
+
+    res.status(200);
+    res.send(productUpdated);
+});
+
 // DELETE method to delete the requested product from the catalog
 app.delete("/deleteProduct/:id", async (req, res) => {
     try {
