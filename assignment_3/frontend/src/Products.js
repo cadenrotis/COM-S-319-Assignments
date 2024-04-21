@@ -444,9 +444,6 @@ function UpdateView({
                 </button>
             </div>
 
-            <br></br>
-            <br></br>
-
             <h1 style={{ display: "flex", justifyContent: "center" }}>Update a Product's Price</h1>
 
             <br></br>
@@ -629,9 +626,6 @@ function DeleteView({
                     Student Information
                 </button>
             </div>
-
-            <br></br>
-            <br></br>
 
             <h1 style={{ display: "flex", justifyContent: "center" }}>Delete a Product from the Catalog</h1>
 
