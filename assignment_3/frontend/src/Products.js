@@ -813,7 +813,7 @@ function StudentView({
             <br></br>
 
             <h1 style={{ display: "flex", justifyContent: "center" }}>Iowa State University</h1>
-            <h1 style={{ display: "flex", justifyContent: "center" }}>COM S 319</h1>
+            <h1 style={{ display: "flex", justifyContent: "center" }}>COM S 319: Construction of User Interfaces</h1>
             <h1 style={{ display: "flex", justifyContent: "center" }}>Date: 4/27/2024</h1>
             <h1 style={{ display: "flex", justifyContent: "center" }}>Professor: Dr. Abraham Aldaco</h1>
 
