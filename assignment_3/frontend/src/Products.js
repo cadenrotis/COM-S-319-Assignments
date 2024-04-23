@@ -425,6 +425,7 @@ function UpdateView({
 
         let updatedPrice = document.getElementById("updatedProductPrice").value;
 
+        // Make the PUT request
         fetch(`http://localhost:8081/updateProduct/${id}`, {
             method: 'PUT',
             headers: { 'content-type': 'application/json' },
@@ -629,6 +630,7 @@ function DeleteView({
         let id = document.getElementById("getProductById").value;
         console.log(id);
 
+        // Make the DELETE request
         fetch(`http://localhost:8081/deleteProduct/${id}`, {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },

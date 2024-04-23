@@ -148,7 +148,7 @@ app.put("/updateProduct/:id", async (req, res) => {
     res.send(productUpdated);
 });
 
-// DELETE method to delete the requested product from the catalog
+// DELETE method to delete the requested product from the database/catalog
 app.delete("/deleteProduct/:id", async (req, res) => {
     try {
         const id = Number(req.params.id);
