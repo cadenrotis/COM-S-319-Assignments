@@ -18,15 +18,12 @@ function AddView({
             let newProduct = {}; // Create a new product object
             let inputProductID = document.getElementById("getProductById").value;
             var mainContainer = document.getElementById("addedProduct");
-            let found = false;
 
             let division = document.createElement("div");
             mainContainer.innerHTML = ``;
 
             for (var i = 0; i < fakeStoreProducts.length; i++) {
                 if (fakeStoreProducts[i].id == inputProductID) {
-                    found = true;
-
                     newProduct = {
                         id: fakeStoreProducts[i].id,
                         title: fakeStoreProducts[i].title,
@@ -57,32 +54,35 @@ function AddView({
                     </div>
                 `;
 
-                    mainContainer.append(division);
-
                     break; // break out of the loop once you've found one new product to add to the database
                 }
             }
-
-            if (!found) {
-                alert("Invalid product. The requested product couldn't be added");
-            }
-            else {
-                // Make the POST request
-                fetch("http://localhost:8081/addProduct", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(newProduct)
+            // Make the POST request
+            fetch("http://localhost:8081/addProduct", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newProduct)
+            })
+                .then(response => {
+                    if (response.status != 200) {
+                        return response.json()
+                            .then(errData => {
+                                throw new Error(`POST response was not ok :\n Status:${response.status}. \n Error: ${errData.error}`);
+                            })
+                    }
+                    return response.json();
                 })
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('New product added successfully:', data);
-                        alert("New product has been successfully added to the catalog");
-                    })
-            }
+                .then(data => {
+                    console.log(data);
+                    mainContainer.append(division);
+                    alert('Product added successfully!'); // Display alert with success message
+                })
+                .catch(error => {
+                    console.error('Error adding product:', error);
+                    alert('Error adding product:' + error.message); // Display alert if there's an error
+                });
         }
     }
 
@@ -193,9 +193,18 @@ function ShowView({
 
             let division = document.createElement("div");
             mainContainer.innerHTML = ``;
+            let found = false;
+            let noID = false;
+
+            if(inputProductID === '') {
+                alert("Bad request: No data provided.");
+                noID = true;
+            }
 
             for (var i = 0; i < products.length; i++) {
                 if (products[i].id == inputProductID) {
+                    found = true;
+                    
                     division.innerHTML = `
                     <br></br>
                     <p><u><b>Requested Product via Search:</b></u></p>
@@ -215,12 +224,17 @@ function ShowView({
 
                     mainContainer.append(division);
                 }
-                // clears the "One Product" view if nothing is in the form and the search button is pressed
-                if (inputProductID == '') {
-                    division.innerHTML = ``;
+            }
 
-                    mainContainer.append(division);
-                }
+            // clears the "One Product" view if nothing is in the form and the search button is pressed
+            if (inputProductID == '') {
+                division.innerHTML = ``;
+
+                mainContainer.append(division);
+            }
+
+            if (!found && !noID) {
+                alert("Invalid product. The requested product is not in the catalog");
             }
         }
     }
@@ -358,6 +372,12 @@ function UpdateView({
             let division = document.createElement("div");
             mainContainer.innerHTML = ``;
             let found = false;
+            let noID = false;
+
+            if (inputProductID === '') {
+                alert("Bad request: No data provided.");
+                noID = true;
+            }
 
             for (var i = 0; i < products.length; i++) {
                 if (products[i].id == inputProductID) {
@@ -391,7 +411,7 @@ function UpdateView({
                 }
             }
 
-            if (!found) {
+            if (!found && !noID) {
                 alert("Invalid product. The requested product is not in the catalog");
             }
         }
@@ -558,6 +578,12 @@ function DeleteView({
             let division = document.createElement("div");
             mainContainer.innerHTML = ``;
             let found = false;
+            let noID = false;
+
+            if (inputProductID === '') {
+                alert("Bad request: No data provided.");
+                noID = true;
+            }
 
             for (var i = 0; i < products.length; i++) {
                 if (products[i].id == inputProductID) {
@@ -591,7 +617,7 @@ function DeleteView({
                 }
             }
 
-            if (!found) {
+            if (!found && !noID) {
                 alert("Invalid product. The requested product is not in the catalog");
             }
         }

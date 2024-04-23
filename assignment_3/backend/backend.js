@@ -35,20 +35,28 @@ app.get("/listProducts", async (req, res) => {
 });
 
 // GET method to retrieve the product that matches the requested id
-app.get("/:id", async (req, res) => {
-    const productid = Number(req.params.id);
-    console.log("Product to find :", productid);
+app.get("/listProducts/:id", async (req, res) => {
+    try {
+        const productid = Number(req.params.id);
+        console.log("Product to find :", productid);
 
-    await client.connect();
-    console.log("Node connected successfully to GET-id MongoDB");
-    const query = { "id": productid };
+        await client.connect();
 
-    const results = await db.collection("fakestore_catalog")
-        .findOne(query);
+        console.log("Node connected successfully to GET-id MongoDB");
+        const query = { "id": productid };
 
-    console.log("Results :", results);
-    if (!results) res.send("Not Found").status(404);
-    else res.send(results).status(200);
+        const results = await db.collection("fakestore_catalog")
+            .findOne(query);
+
+        console.log("Results :", results);
+        if (!results) res.send("Not Found").status(404);
+        else res.send(results).status(200);
+    }
+
+    catch (error) {
+        console.error("An error occurred:", error);
+        res.status(500).send({ error: 'An internal server error occurred' });
+    }
 });
 
 // POST method to add a new product to the database/product catalog
@@ -56,7 +64,19 @@ app.post("/addProduct", async (req, res) => {
 
     // use try-and-catch in case the server finds an error
     try {
+        // check if request body is empty
+        if (!req.body || Object.keys(req.body).length === 0) {
+            return res.status(400).send({ error: 'Bad request: No data provided.' });
+        }
+
         await client.connect();
+
+        // check if "fakestore_catalog" collection exists
+        const collections = await db.listCollections({ name: "fakestore_catalog" }).toArray();
+        if (collections.length === 0) {
+            return res.status(404).send({ error: 'Not found: Collection does not exist.' });
+        }
+
         const keys = Object.keys(req.body);
         const values = Object.values(req.body);
 
@@ -73,6 +93,12 @@ app.post("/addProduct", async (req, res) => {
             }
         };
         console.log(newDocument);
+
+        // check if id is unique in collection, meaning if duplicate products exist or not
+        const existingDoc = await db.collection("fakestore_catalog").findOne({ "id": newDocument.id });
+        if (existingDoc) {
+            return res.status(409).send({ error: 'Conflict: A product with this ID already exists.' });
+        }
 
         const results = await db
             .collection("fakestore_catalog")
@@ -94,6 +120,7 @@ app.put("/updateProduct/:id", async (req, res) => {
     const query = { id: id };
 
     await client.connect();
+
     console.log("Product to Update :", id);
 
     // Data for updating the document, typically comes from the request body
